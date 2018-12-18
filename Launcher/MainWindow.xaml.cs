@@ -29,6 +29,7 @@ namespace Launcher
 
 
         }
+        
         public void exeFinder()
         {
             string sourceDirectory = @"D:\kloubma16\neco";
@@ -38,6 +39,9 @@ namespace Launcher
             List<string> outputPath = new List<string>();
 
             List<string> FinalExeFiles = new List<string>();
+            // https://stackoverflow.com/questions/20573063/creating-icon-view-mode-for-listview-wpf
+            
+
 
             try
             {
@@ -80,7 +84,12 @@ namespace Launcher
                     foreach (string exeFile in exeFiles)
                     {
                         FinalExeFiles.Add(exeFile);
-                        names.Items.Add(exeFile);
+                        // names.Items.Add(exeFile);
+                        SApp app = new SApp();
+                        app.Name = "ExampleName";
+                        app.Icon = "Launcher/defaultIcon.ico";
+                        names = app; 
+                        
 
                     }
                    
@@ -100,5 +109,7 @@ namespace Launcher
 
 
         }
+       
+        
     }
 }

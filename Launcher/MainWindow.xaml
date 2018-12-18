@@ -13,13 +13,34 @@
         TextOptions.TextRenderingMode="Auto"        
         Background="{DynamicResource MaterialDesignPaper}"
         FontFamily="{DynamicResource MaterialDesignFont}"
-        Title="MainWindow" Height="450" Width="800">
+        Title="MainWindow" Height="460.778" Width="800">
+    
     <Grid>
-        
-            <ListView x:Name="names" SelectionChanged="Names_SelectionChanged"/>
-           
-        
-        
+
+        <ListView x:Name="names" ItemsSource="{Binding}" ScrollViewer.HorizontalScrollBarVisibility="Disabled"
+              SelectedItem="{Binding SelectedComputer, RelativeSource={RelativeSource AncestorType=Window}}"
+              ItemContainerStyle="{StaticResource FileItemStyle}" Margin="0,0,0,101">
+            <ListView.ItemsPanel>
+                <ItemsPanelTemplate>
+                    <WrapPanel/>
+                </ItemsPanelTemplate>
+            </ListView.ItemsPanel>
+
+            <ListView.ItemTemplate>
+                <DataTemplate>
+                    <DockPanel>
+                        <TextBlock DockPanel.Dock="Bottom" Text="{Binding Name}"/>
+                        <Image Source="{Binding Icon}"/>
+                    </DockPanel>
+                </DataTemplate>
+            </ListView.ItemTemplate> >
+            
+        </ListView>
+
+
+       
+
+
 
     </Grid>
 </Window>

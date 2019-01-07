@@ -14,9 +14,9 @@ namespace Launcher
     {
         List<string> Csproj = new List<string>(); // cela cesta
         List<string> FinalExeFiles = new List<string>(); // final exe paths
-        public List<string> exeFinder(ListView names)
+        public List<string> exeFinder(ListView names, string path)
         {
-            string sourceDirectory = @"C:\Users\Nari\source";
+            string sourceDirectory = path;
             //string archiveDirectory = @"C:\archive";
             
             List<string> OrigCsproj = new List<string>(); // cesta k cs proj
@@ -101,7 +101,7 @@ namespace Launcher
             int LocationsC = FinalExeFiles.Count;
             for (int i = 0; i < LocationsC; i++)
             {
-                int pos = FinalExeFiles[i].LastIndexOf(@"\");
+                int pos = FinalExeFiles[i].LastIndexOf(@"\") + 1;
                 CutN.Add(FinalExeFiles[i].Substring(pos, FinalExeFiles[i].Length - pos));   
             }
             return CutN;

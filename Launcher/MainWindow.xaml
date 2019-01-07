@@ -15,31 +15,32 @@
         FontFamily="{DynamicResource MaterialDesignFont}"
         Title="MainWindow" Height="460.778" Width="800">
     
-    <Grid Margin="0,0,0,99">
+    <Grid>
 
-        <ListView x:Name="names" ItemsSource="{Binding}" SelectedItem="{Binding SelectedComputer, RelativeSource={RelativeSource AncestorType=Window}}"
-              >
+        <ListView x:Name="names" ItemsSource="{Binding}" SelectedItem="{Binding SelectedComputer, RelativeSource={RelativeSource AncestorType=Window}}" Margin="0,0,0,32">
             <ListView.ItemsPanel>
                 <ItemsPanelTemplate>
                     <WrapPanel/>
                 </ItemsPanelTemplate>
-            </ListView.ItemsPanel>
+            </ListView.ItemsPanel> 
             <ListView.ItemContainerStyle>
                 <Style TargetType="ListViewItem">
                     <EventSetter Event="PreviewMouseLeftButtonDown" Handler="ListViewItem_PreviewMouseLeftButtonDown" />
+                    <EventSetter Event="PreviewMouseRightButtonDown" Handler="ListViewItem_PreviewMouseRightButtonDown" />
                 </Style>
             </ListView.ItemContainerStyle>
             <ListView.ItemTemplate>
                 <DataTemplate>
                     <StackPanel>
                         <Image Source="{Binding Iicon}"/>
-                        <TextBlock Text="{Binding Name}"/>
-                        <TextBlock Text="{Binding Path}" Visibility="Collapsed"/>
+                        <TextBlock Text="{Binding Name}" x:Name="name"/>
+                        <TextBlock Text="{Binding Path}" Visibility="Collapsed" x:Name="path"/>
                     </StackPanel>
                 </DataTemplate>
             </ListView.ItemTemplate> >
 
         </ListView>
+        <Button HorizontalAlignment="Center" VerticalAlignment="Bottom" Content="Select Folder" Click="Button_Click" x:Name="Button1"></Button>
 
 
 

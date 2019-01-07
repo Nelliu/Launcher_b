@@ -1,5 +1,7 @@
-﻿using System;
+﻿using Microsoft.Win32;
+using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Drawing;
 using System.IO;
 using System.Linq;
@@ -27,29 +29,11 @@ namespace Launcher
         public Aboutfiles fil = new Aboutfiles();
         public List<string> Locations = new List<string>();
         public int ListSize = 0;
-        
+        string result = "";
+
         public MainWindow()
         {
             InitializeComponent();
-            Locations = fil.exeFinder(names);
-            List<string> CNames = fil.CutNames();
-            ListSize = Locations.Count;
-            for (int i = 0; i < ListSize; i++)
-            {
-                ImageBrush icon = new ImageBrush();
-                icon.ImageSource = fil.GetIcon(Locations[i]).ToImageSource();
-                SApp sApp = new SApp();
-                sApp.Name = CNames[i];
-                sApp.Iicon = fil.GetIcon(Locations[i]).ToImageSource();
-                sApp.Path = Locations[i];
-                names.Items.Add(sApp);
-                
-
-                
-                
-            }
-
-
         }
 
 
@@ -58,17 +42,47 @@ namespace Launcher
             var item = sender as ListViewItem;
             if (item != null && item.IsSelected)
             {
-                names.SelectedItem
+                SApp SelectedItem = (SApp)names.SelectedItem;
+                string path = SelectedItem.Path;
+                //test.Text = path;
+
+                Process.Start(path);
             }
         }
-        //private void Names_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        //{
-        //    string item = (string) names.SelectedItem;
+        private void ListViewItem_PreviewMouseRightButtonDown(object sender, MouseButtonEventArgs e)
+        {
+            var item = sender as ListViewItem;
+            if (item != null && item.IsSelected)
+            {
+                SApp SelectedItem = (SApp)names.SelectedItem;
+                string path = SelectedItem.Path;
+                //test.Text = path;
+
+                File.Delete(path);
+            }
+        }
+        private void Button_Click(object sender, RoutedEventArgs e)
+        {
+            PathWin Folder = new PathWin();
+            string result = Folder.GetPath("Select path");
+            if (result != "")
+            {
+                Locations = fil.exeFinder(names, result);
+                List<string> CNames = fil.CutNames();
+                ListSize = Locations.Count;
+                for (int i = 0; i < ListSize; i++)
+                {
+                    SApp sApp = new SApp();
+                    sApp.Name = CNames[i];
+                    sApp.Iicon = fil.GetIcon(Locations[i]).ToImageSource();
+                    sApp.Path = Locations[i];
+                    names.Items.Add(sApp);
 
 
-        //}
+                }
+            }
 
-
+        }
     }
 
 }

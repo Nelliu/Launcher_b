@@ -15,30 +15,33 @@
         FontFamily="{DynamicResource MaterialDesignFont}"
         Title="MainWindow" Height="460.778" Width="800">
     
-    <Grid>
+    <Grid Margin="0,0,0,99">
 
-        <ListView x:Name="names" ItemsSource="{Binding}" ScrollViewer.HorizontalScrollBarVisibility="Disabled"
-              SelectedItem="{Binding SelectedComputer, RelativeSource={RelativeSource AncestorType=Window}}"
-              ItemContainerStyle="{StaticResource FileItemStyle}" Margin="0,0,0,101">
+        <ListView x:Name="names" ItemsSource="{Binding}" SelectedItem="{Binding SelectedComputer, RelativeSource={RelativeSource AncestorType=Window}}"
+              >
             <ListView.ItemsPanel>
                 <ItemsPanelTemplate>
                     <WrapPanel/>
                 </ItemsPanelTemplate>
             </ListView.ItemsPanel>
-
+            <ListView.ItemContainerStyle>
+                <Style TargetType="ListViewItem">
+                    <EventSetter Event="PreviewMouseLeftButtonDown" Handler="ListViewItem_PreviewMouseLeftButtonDown" />
+                </Style>
+            </ListView.ItemContainerStyle>
             <ListView.ItemTemplate>
                 <DataTemplate>
-                    <DockPanel>
-                        <TextBlock DockPanel.Dock="Bottom" Text="{Binding Name}"/>
-                        <Image Source="{Binding Icon}"/>
-                    </DockPanel>
+                    <StackPanel>
+                        <Image Source="{Binding Iicon}"/>
+                        <TextBlock Text="{Binding Name}"/>
+                        <TextBlock Text="{Binding Path}" Visibility="Collapsed"/>
+                    </StackPanel>
                 </DataTemplate>
             </ListView.ItemTemplate> >
-            
+
         </ListView>
 
 
-       
 
 
 

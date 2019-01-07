@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -22,94 +23,52 @@ namespace Launcher
     /// </summary>
     public partial class MainWindow : Window
     {
+
+        public Aboutfiles fil = new Aboutfiles();
+        public List<string> Locations = new List<string>();
+        public int ListSize = 0;
+        
         public MainWindow()
         {
             InitializeComponent();
-            exeFinder();
+            Locations = fil.exeFinder(names);
+            List<string> CNames = fil.CutNames();
+            ListSize = Locations.Count;
+            for (int i = 0; i < ListSize; i++)
+            {
+                ImageBrush icon = new ImageBrush();
+                icon.ImageSource = fil.GetIcon(Locations[i]).ToImageSource();
+                SApp sApp = new SApp();
+                sApp.Name = CNames[i];
+                sApp.Iicon = fil.GetIcon(Locations[i]).ToImageSource();
+                sApp.Path = Locations[i];
+                names.Items.Add(sApp);
+                
+
+                
+                
+            }
 
 
         }
-        
-        public void exeFinder()
+
+
+        private void ListViewItem_PreviewMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
-            string sourceDirectory = @"D:\kloubma16\neco";
-            //string archiveDirectory = @"C:\archive";
-            List<string> Csproj = new List<string>();
-            List<string> OrigCsproj = new List<string>();
-            List<string> outputPath = new List<string>();
-
-            List<string> FinalExeFiles = new List<string>();
-            // https://stackoverflow.com/questions/20573063/creating-icon-view-mode-for-listview-wpf
-            
-
-
-            try
+            var item = sender as ListViewItem;
+            if (item != null && item.IsSelected)
             {
-                var csprojFiles = Directory.EnumerateFiles(sourceDirectory, "*.csproj", SearchOption.AllDirectories);
-
-                foreach (string currentFile in csprojFiles)
-                {
-                    Csproj.Add(currentFile);
-                    string fileName = currentFile.Substring(sourceDirectory.Length + 1 );
-                   
-                }
-              
-                //names.Text = Csproj[1] + "\n";
-                for (int i = 0; i < Csproj.Count; i++)
-                {
-                    OrigCsproj.Add(Csproj[i]);
-                    Csproj[i] = Csproj[i].Substring(0, Csproj[i].LastIndexOf("\\") + 1);
-
-                    //names.Items.Add(Csproj[i]);
-                }
-
-                for (int a = 0; a < OrigCsproj.Count; a++)
-                {
-                    //var proj = Project.Load(@"D:\kloubma16\neco\dedicnost\ConsoleApp1\ConsoleApp1\ConsoleApp1.csproj");
-                    var proj = Project.Load(OrigCsproj[a]);
-                    var debug = proj.PropertyGroups.First(x => x.Condition == " '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ");
-                   
-                    outputPath.Add(debug["OutputPath"]);
-                    
-                   // names.Items.Add(debug["OutputPath"]);
-
-                    Csproj[a] = Csproj[a] + outputPath[a];
-                    //names.Items.Add(Csproj[a]);
-
-
-
-                    string exeDir = @Csproj[a];
-                    //names.Items.Add(exeDir);
-                    var exeFiles = Directory.EnumerateFiles(exeDir, "*.exe", SearchOption.AllDirectories);
-                    foreach (string exeFile in exeFiles)
-                    {
-                        FinalExeFiles.Add(exeFile);
-                        // names.Items.Add(exeFile);
-                        SApp app = new SApp();
-                        app.Name = "ExampleName";
-                        app.Icon = "Launcher/defaultIcon.ico";
-                        names = app; 
-                        
-
-                    }
-                   
-                }
-               
-            }
-           
-            catch (Exception e)
-            {
-               // names.Items.Add(e.Message);
+                names.SelectedItem
             }
         }
+        //private void Names_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        //{
+        //    string item = (string) names.SelectedItem;
 
-        private void Names_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-            string item = (string) names.SelectedItem;
+
+        //}
 
 
-        }
-       
-        
     }
+
 }
